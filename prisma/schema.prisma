@@ -12,8 +12,24 @@ datasource db {
     relationMode = "prisma"
 }
 
-model Example {
+model Meeting {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    title          String         @default("New Meeting")
+    creatorId      String
+    availabilities Availability[]
+}
+
+model Availability {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    startTime DateTime
+    endTime   DateTime
+    userId    String
+    meetingId String
+    Meeting   Meeting  @relation(fields: [meetingId], references: [id])
 }
