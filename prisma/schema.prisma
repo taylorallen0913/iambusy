@@ -17,12 +17,12 @@ model Meeting {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    title          String         @default("New Meeting")
-    creatorId      String
-    availabilities Availability[]
+    title              String             @default("New Meeting")
+    creatorId          String
+    userAvailabilities UserAvailability[]
 }
 
-model Availability {
+model UserAvailability {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
