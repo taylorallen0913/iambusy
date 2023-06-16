@@ -14,4 +14,35 @@ export const meetingRouter = createTRPCRouter({
       });
       return meeting;
     }),
+  modifyAvailability: privateProcedure
+    .input(
+      z.object({
+        meetingId: z.string(),
+        utcStartTime: z.date(),
+        utcEndTime: z.date(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { meetingId, utcStartTime, utcEndTime } = input;
+      const { userId } = ctx;
+
+      return await ctx.prisma.userAvailability.upsert({
+        where: {
+          userId_meetingId: {
+            userId,
+            meetingId,
+          },
+        },
+        update: {
+          utcStartTime,
+          utcEndTime,
+        },
+        create: {
+          utcStartTime,
+          utcEndTime,
+          meetingId,
+          userId,
+        },
+      });
+    }),
 });

@@ -27,9 +27,11 @@ model UserAvailability {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    startTime DateTime
-    endTime   DateTime
-    userId    String
-    meetingId String
-    Meeting   Meeting  @relation(fields: [meetingId], references: [id])
+    utcStartTime DateTime
+    utcEndTime   DateTime
+    userId       String
+    meetingId    String
+    meeting      Meeting  @relation(fields: [meetingId], references: [id])
+
+    @@unique([userId, meetingId])
 }
