@@ -17,7 +17,7 @@ model Meeting {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    title              String             @default("New Meeting")
+    name               String             @default("New Meeting") @db.VarChar(100)
     creatorId          String
     userAvailabilities UserAvailability[]
 }
