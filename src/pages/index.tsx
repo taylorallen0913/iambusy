@@ -31,7 +31,23 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="h-screen bg-slate-900">
+      <main className="h-screen bg-gradient-radial from-slate-900 to-indigo-950">
+        {/* Header text */}
+        <div className="flex flex-col items-center space-y-7 pt-32">
+          <h1 className="max-w-4xl text-center text-6xl font-bold text-white md:text-8xl">
+            Simplify the way you{" "}
+            <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              Schedule
+            </span>{" "}
+            Meetings.
+          </h1>
+          <h1 className="max-w-3xl px-6 text-center text-sm font-light text-gray-300 md:px-0 md:text-xl">
+            Say goodbye to the back-and-forth of scheduling. With our
+            user-friendly interface, coordinating meetings is simpler and faster
+            than ever.
+          </h1>
+        </div>
+
         <button
           type="button"
           onClick={(e) => {
