@@ -31,7 +31,7 @@ model UserAvailability {
     utcEndTime   DateTime
     userId       String
     meetingId    String
-    meeting      Meeting  @relation(fields: [meetingId], references: [id])
+    meeting      Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 
     @@unique([userId, meetingId])
 }
