@@ -2,6 +2,7 @@ import { UserButton } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Calendar from "~/components/Calendar";
 import { api } from "~/utils/api";
 
 const DashboardPage: NextPage = () => {
@@ -38,16 +39,12 @@ const DashboardPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen bg-gradient-radial from-slate-900 to-indigo-950">
-        <UserButton />
-        <div className="flex w-1/2 flex-col gap-y-5">
-          {!isCreatingMeetingLoading && (
-            <button
-              onClick={createMeeting}
-              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Create new meeting
-            </button>
-          )}
+        <div className="mx-auto max-w-6xl pt-20">
+          <Calendar
+            isAddEventButtonVisible={!isCreatingMeetingLoading}
+            onAddEvent={createMeeting}
+          />
+          <UserButton />
         </div>
       </main>
     </>
