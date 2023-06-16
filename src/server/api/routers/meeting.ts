@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
@@ -25,6 +26,20 @@ export const meetingRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { meetingId, utcStartTime, utcEndTime } = input;
       const { userId } = ctx;
+
+      // Check if meeting with meetingId exists
+      const meetingExists = !!(await ctx.prisma.userAvailability.findFirst({
+        where: {
+          id: meetingId,
+        },
+      }));
+
+      if (!meetingExists) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "The meeting id provided does not exist.",
+        });
+      }
 
       return await ctx.prisma.userAvailability.upsert({
         where: {
