@@ -11,7 +11,7 @@ const DashboardPage: NextPage = () => {
     api.meeting.create.useMutation({
       onSuccess: async (meeting) => {
         console.log("Successfully created meeting!");
-        await router.push(`/meeting/${meeting.id}`);
+        await router.push(`/dashboard/meeting/${meeting.id}`);
       },
       onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors.content;

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/require-await */
 import { type GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 
 interface MeetingPageProps {
@@ -8,6 +9,7 @@ interface MeetingPageProps {
 }
 
 const MeetingPage: NextPage<MeetingPageProps> = ({ id }) => {
+  const router = useRouter();
   const {
     mutate: modifyAvailabilityMutation,
     isLoading: isModifyingAvailabilityLoading,
@@ -48,6 +50,15 @@ const MeetingPage: NextPage<MeetingPageProps> = ({ id }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="h-screen bg-gradient-radial from-slate-900 to-indigo-950 text-white">
+        <div className="pb-10">
+          <button
+            onClick={() => router.back()}
+            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Go Back
+          </button>
+        </div>
+
         {!isModifyingAvailabilityLoading && (
           <button
             onClick={modifyAvailability}

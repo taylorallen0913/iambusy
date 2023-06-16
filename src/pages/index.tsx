@@ -1,9 +1,8 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { api } from "~/utils/api";
+import Link from "next/link";
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
     <>
       <Head>
@@ -30,9 +29,17 @@ const Home: NextPage = () => {
             than ever.
           </h1>
         </div>
+        <div className="flex justify-center pt-10">
+          <Link
+            href="/dashboard"
+            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Get Started
+          </Link>
+        </div>
       </main>
     </>
   );
 };
 
-export default Home;
+export default HomePage;

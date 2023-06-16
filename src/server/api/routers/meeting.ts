@@ -27,17 +27,8 @@ export const meetingRouter = createTRPCRouter({
       const { meetingId, utcStartTime, utcEndTime } = input;
       const { userId } = ctx;
 
-      const meeting = await ctx.prisma.userAvailability.findFirst({
-        where: {
-          id: meetingId,
-        },
-      });
-      console.log("\n\n\n\n\nhere\n\n\n\n\n");
-
-      console.log(meeting);
-
       // Check if meeting with meetingId exists
-      const meetingExists = !!(await ctx.prisma.userAvailability.findFirst({
+      const meetingExists = !!(await ctx.prisma.meeting.findFirst({
         where: {
           id: meetingId,
         },
