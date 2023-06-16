@@ -60,4 +60,9 @@ export const meetingRouter = createTRPCRouter({
         },
       });
     }),
+  getUserMeetings: privateProcedure.query(async ({ ctx }) => {
+    const { userId } = ctx;
+
+    const meetings = ctx.prisma.meeting.findMany();
+  }),
 });
