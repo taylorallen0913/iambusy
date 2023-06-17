@@ -44,7 +44,7 @@ const DashboardPage: NextPage = () => {
       <main className="h-screen bg-gradient-radial from-slate-900 to-indigo-950">
         <div className="mx-auto max-w-6xl pt-20">
           {isMeetingsLoading ? (
-            <div>Loading...</div>
+            <div className="text-white">Loading...</div>
           ) : (
             <div>
               <Calendar
