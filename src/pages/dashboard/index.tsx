@@ -41,7 +41,7 @@ const DashboardPage: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="h-screen bg-gradient-radial from-slate-900 to-indigo-950">
+      <main className="min-h-screen bg-gradient-radial from-slate-900 to-indigo-950">
         <div className="mx-auto max-w-6xl pt-20">
           {isMeetingsLoading ? (
             <div className="text-white">Loading...</div>

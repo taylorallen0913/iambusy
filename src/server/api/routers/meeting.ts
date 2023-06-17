@@ -15,6 +15,44 @@ export const meetingRouter = createTRPCRouter({
       });
       return meeting;
     }),
+  update: privateProcedure
+    .input(
+      z.object({
+        meetingId: z.string(),
+        name: z.string().optional(),
+        imageUrl: z.string().optional(),
+        location: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { meetingId, name, imageUrl, location } = input;
+
+      // Check if meeting with meetingId exists
+      const meeting = await ctx.prisma.meeting.findUnique({
+        where: {
+          id: meetingId,
+        },
+      });
+
+      if (!meeting) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "The meeting id provided does not exist.",
+        });
+      }
+
+      // Update the meeting
+      const updatedMeeting = await ctx.prisma.meeting.update({
+        where: { id: meetingId },
+        data: {
+          name,
+          imageUrl,
+          location,
+        },
+      });
+
+      return updatedMeeting;
+    }),
   modifyAvailability: privateProcedure
     .input(
       z.object({
