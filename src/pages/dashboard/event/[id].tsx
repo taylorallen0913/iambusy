@@ -31,28 +31,23 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
     },
   });
 
-  const { mutate: modifyEventMutation, isLoading: isModifyingEventLoading } =
-    api.event.update.useMutation({
-      onSuccess: () => {
-        console.log("Successfully updated event!");
-      },
-      onError: (e) => {
-        const errorMessage = e.data?.zodError?.fieldErrors.content;
-        if (errorMessage && errorMessage[0]) {
-          console.log(errorMessage[0]);
-        } else {
-          console.log(
-            "Failed to update event availability! Please try again later."
-          );
-        }
-      },
-    });
+  const { mutate: modifyEventMutation } = api.event.update.useMutation({
+    onSuccess: () => {
+      console.log("Successfully updated event!");
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        console.log(errorMessage[0]);
+      } else {
+        console.log(
+          "Failed to update event availability! Please try again later."
+        );
+      }
+    },
+  });
 
-  const {
-    data: event,
-    isLoading,
-    isError,
-  } = api.event.getById.useQuery({ id });
+  const { data: event, isLoading } = api.event.getById.useQuery({ id });
 
   // Modifies event availability. If a user has not already set a event availibility, this will set it for them.
   const modifyAvailability = () => {
@@ -72,11 +67,13 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
   }
 
   if (!event) {
-    <div className="py-10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        Something went wrong...
+    return (
+      <div className="py-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          Something went wrong...
+        </div>
       </div>
-    </div>;
+    );
   }
 
   return (
