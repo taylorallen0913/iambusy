@@ -9,7 +9,7 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { type MeetingTypeOutput } from "~/utils/api";
+import { type EventTypeOutput } from "~/utils/api";
 import Link from "next/link";
 
 function classNames(...classes: unknown[]) {
@@ -19,11 +19,11 @@ function classNames(...classes: unknown[]) {
 interface CalendarProps {
   isAddEventButtonVisible: boolean;
   onAddEvent: () => void;
-  meetings?: MeetingTypeOutput;
+  events?: EventTypeOutput;
 }
 
 const Calendar: React.FC<CalendarProps> = ({
-  meetings,
+  events,
   isAddEventButtonVisible,
   onAddEvent,
 }) => {
@@ -59,7 +59,7 @@ const Calendar: React.FC<CalendarProps> = ({
   return (
     <div>
       <h2 className="text-base font-semibold leading-6 text-gray-300">
-        Upcoming meetings
+        Upcoming events
       </h2>
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
         {/* Calendar Section */}
@@ -125,17 +125,17 @@ const Calendar: React.FC<CalendarProps> = ({
         </div>
 
         <ol className="mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8">
-          {!!meetings &&
-            meetings.map((meeting) => {
+          {!!events &&
+            events.map((event) => {
               return (
-                <li key={meeting.id}>
+                <li key={event.id}>
                   <Link
-                    href={`/dashboard/meeting/${meeting.id}`}
+                    href={`/dashboard/event/${event.id}`}
                     className="relative flex space-x-6 py-6 xl:static"
                   >
                     <Image
                       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                      src={meeting.imageUrl!}
+                      src={event.imageUrl!}
                       alt=""
                       width={20}
                       height={20}
@@ -143,7 +143,7 @@ const Calendar: React.FC<CalendarProps> = ({
                     />
                     <div className="flex-auto">
                       <h3 className="pr-10 font-semibold text-gray-400 xl:pr-0">
-                        {meeting.name}
+                        {event.name}
                       </h3>
                       <dl className="mt-2 flex flex-col text-gray-500 xl:flex-row">
                         <div className="flex items-start space-x-3">
@@ -158,8 +158,8 @@ const Calendar: React.FC<CalendarProps> = ({
                             <time dateTime="2022-01-10T17:00">
                               January 10th, 2022 at 5:00 PM
                             </time>
-                            {/* <time dateTime={meeting.datetime}>
-                          {meeting.date} at {meeting.time}
+                            {/* <time dateTime={event.datetime}>
+                          {event.date} at {event.time}
                         </time> */}
                           </dd>
                         </div>
@@ -171,7 +171,7 @@ const Calendar: React.FC<CalendarProps> = ({
                               aria-hidden="true"
                             />
                           </dt>
-                          <dd>{meeting.location}</dd>
+                          <dd>{event.location}</dd>
                         </div>
                       </dl>
                     </div>

@@ -12,12 +12,12 @@ datasource db {
     relationMode = "prisma"
 }
 
-model Meeting {
+model Event {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name               String?            @default("New Meeting") @db.VarChar(100)
+    name               String?            @default("New Event") @db.VarChar(100)
     imageUrl           String?            @default("https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png")
     location           String?            @default("Google Meet")
     creatorId          String
@@ -32,8 +32,8 @@ model UserAvailability {
     utcStartTime DateTime
     utcEndTime   DateTime
     userId       String
-    meetingId    String
-    meeting      Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+    eventId      String
+    event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
-    @@unique([userId, meetingId])
+    @@unique([userId, eventId])
 }

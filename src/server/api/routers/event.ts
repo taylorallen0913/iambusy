@@ -2,69 +2,69 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
-export const meetingRouter = createTRPCRouter({
+export const eventRouter = createTRPCRouter({
   getById: privateProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       const { id } = input;
 
-      // Check if meeting with meetingId exists
-      const meeting = await ctx.prisma.meeting.findUnique({
+      // Check if event with eventId exists
+      const event = await ctx.prisma.event.findUnique({
         where: {
           id,
         },
       });
 
-      if (!meeting) {
+      if (!event) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "The meeting id provided does not exist.",
+          message: "The event id provided does not exist.",
         });
       }
 
-      return meeting;
+      return event;
     }),
   create: privateProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const { name } = input;
-      const meeting = await ctx.prisma.meeting.create({
+      const event = await ctx.prisma.event.create({
         data: {
           name,
           creatorId: ctx.userId,
         },
       });
-      return meeting;
+      return event;
     }),
   update: privateProcedure
     .input(
       z.object({
-        meetingId: z.string(),
+        eventId: z.string(),
         name: z.string().optional(),
         imageUrl: z.string().optional(),
         location: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { meetingId, name, imageUrl, location } = input;
+      const { eventId, name, imageUrl, location } = input;
 
-      // Check if meeting with meetingId exists
-      const meeting = await ctx.prisma.meeting.findUnique({
+      // Check if event with eventId exists
+      const event = await ctx.prisma.event.findUnique({
         where: {
-          id: meetingId,
+          id: eventId,
         },
       });
 
-      if (!meeting) {
+      if (!event) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "The meeting id provided does not exist.",
+          message: "The event id provided does not exist.",
         });
       }
 
-      // Update the meeting
-      const updatedMeeting = await ctx.prisma.meeting.update({
-        where: { id: meetingId },
+      // Update the event
+      const updatedEvent = await ctx.prisma.event.update({
+        where: { id: eventId },
         data: {
           name,
           imageUrl,
@@ -72,39 +72,39 @@ export const meetingRouter = createTRPCRouter({
         },
       });
 
-      return updatedMeeting;
+      return updatedEvent;
     }),
   modifyAvailability: privateProcedure
     .input(
       z.object({
-        meetingId: z.string(),
+        eventId: z.string(),
         utcStartTime: z.date(),
         utcEndTime: z.date(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { meetingId, utcStartTime, utcEndTime } = input;
+      const { eventId, utcStartTime, utcEndTime } = input;
       const { userId } = ctx;
 
-      // Check if meeting with meetingId exists
-      const meetingExists = !!(await ctx.prisma.meeting.findFirst({
+      // Check if event with eventId exists
+      const eventExists = !!(await ctx.prisma.event.findFirst({
         where: {
-          id: meetingId,
+          id: eventId,
         },
       }));
 
-      if (!meetingExists) {
+      if (!eventExists) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "The meeting id provided does not exist.",
+          message: "The event id provided does not exist.",
         });
       }
 
       return await ctx.prisma.userAvailability.upsert({
         where: {
-          userId_meetingId: {
+          userId_eventId: {
             userId,
-            meetingId,
+            eventId,
           },
         },
         update: {
@@ -114,20 +114,20 @@ export const meetingRouter = createTRPCRouter({
         create: {
           utcStartTime,
           utcEndTime,
-          meetingId,
+          eventId,
           userId,
         },
       });
     }),
-  getUserMeetings: privateProcedure.query(async ({ ctx }) => {
+  getUserEvents: privateProcedure.query(async ({ ctx }) => {
     const { userId } = ctx;
 
-    const meetings = ctx.prisma.meeting.findMany({
+    const events = ctx.prisma.event.findMany({
       where: { creatorId: userId },
       take: 100,
       orderBy: [{ createdAt: "desc" }],
     });
 
-    return meetings;
+    return events;
   }),
 });

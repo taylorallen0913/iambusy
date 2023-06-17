@@ -2,23 +2,22 @@
 import { type GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 
-interface MeetingPageProps {
+interface EventPageProps {
   id: string;
 }
 
-const MeetingPage: NextPage<MeetingPageProps> = ({ id }) => {
+const EventPage: NextPage<EventPageProps> = ({ id }) => {
   const router = useRouter();
   const ctx = api.useContext();
 
   const {
     mutate: modifyAvailabilityMutation,
     isLoading: isModifyingAvailabilityLoading,
-  } = api.meeting.modifyAvailability.useMutation({
+  } = api.event.modifyAvailability.useMutation({
     onSuccess: () => {
-      console.log("Successfully updated meeting availability!");
+      console.log("Successfully updated event availability!");
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors.content;
@@ -26,41 +25,39 @@ const MeetingPage: NextPage<MeetingPageProps> = ({ id }) => {
         console.log(errorMessage[0]);
       } else {
         console.log(
-          "Failed to update meeting availability! Please try again later."
+          "Failed to update event availability! Please try again later."
         );
       }
     },
   });
 
-  const {
-    mutate: modifyMeetingMutation,
-    isLoading: isModifyingMeetingLoading,
-  } = api.meeting.update.useMutation({
-    onSuccess: () => {
-      console.log("Successfully updated meeting!");
-    },
-    onError: (e) => {
-      const errorMessage = e.data?.zodError?.fieldErrors.content;
-      if (errorMessage && errorMessage[0]) {
-        console.log(errorMessage[0]);
-      } else {
-        console.log(
-          "Failed to update meeting availability! Please try again later."
-        );
-      }
-    },
-  });
+  const { mutate: modifyEventMutation, isLoading: isModifyingEventLoading } =
+    api.event.update.useMutation({
+      onSuccess: () => {
+        console.log("Successfully updated event!");
+      },
+      onError: (e) => {
+        const errorMessage = e.data?.zodError?.fieldErrors.content;
+        if (errorMessage && errorMessage[0]) {
+          console.log(errorMessage[0]);
+        } else {
+          console.log(
+            "Failed to update event availability! Please try again later."
+          );
+        }
+      },
+    });
 
   const {
-    data: meeting,
+    data: event,
     isLoading,
     isError,
-  } = api.meeting.getById.useQuery({ id });
+  } = api.event.getById.useQuery({ id });
 
-  // Modifies meeting availability. If a user has not already set a meeting availibility, this will set it for them.
+  // Modifies event availability. If a user has not already set a event availibility, this will set it for them.
   const modifyAvailability = () => {
     modifyAvailabilityMutation({
-      meetingId: id,
+      eventId: id,
       utcStartTime: new Date(),
       utcEndTime: new Date(),
     });
@@ -89,8 +86,8 @@ const MeetingPage: NextPage<MeetingPageProps> = ({ id }) => {
             placeholder="New Event"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                modifyMeetingMutation({
-                  meetingId: id,
+                modifyEventMutation({
+                  eventId: id,
                   name: e.currentTarget.value,
                 });
               }
@@ -100,7 +97,7 @@ const MeetingPage: NextPage<MeetingPageProps> = ({ id }) => {
         <div className="pb-10">
           <button
             onClick={() => {
-              void ctx.meeting.getUserMeetings.invalidate();
+              void ctx.event.getUserEvents.invalidate();
               void router.replace("/dashboard");
             }}
             className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -114,7 +111,7 @@ const MeetingPage: NextPage<MeetingPageProps> = ({ id }) => {
             onClick={modifyAvailability}
             className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Modify Meeting Availability
+            Modify Event Availability
           </button>
         )}
       </main>
@@ -122,7 +119,7 @@ const MeetingPage: NextPage<MeetingPageProps> = ({ id }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<MeetingPageProps> = async (
+export const getServerSideProps: GetServerSideProps<EventPageProps> = async (
   context
 ) => {
   const id = context.params?.id;
@@ -132,4 +129,4 @@ export const getServerSideProps: GetServerSideProps<MeetingPageProps> = async (
   };
 };
 
-export default MeetingPage;
+export default EventPage;
