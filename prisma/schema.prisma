@@ -17,7 +17,9 @@ model Meeting {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name               String             @default("New Meeting") @db.VarChar(100)
+    name               String?            @default("New Meeting") @db.VarChar(100)
+    imageUrl           String?            @default("https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png")
+    location           String?            @default("Google Meet")
     creatorId          String
     userAvailabilities UserAvailability[]
 }

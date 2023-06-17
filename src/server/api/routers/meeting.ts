@@ -63,6 +63,12 @@ export const meetingRouter = createTRPCRouter({
   getUserMeetings: privateProcedure.query(async ({ ctx }) => {
     const { userId } = ctx;
 
-    const meetings = ctx.prisma.meeting.findMany();
+    const meetings = ctx.prisma.meeting.findMany({
+      where: { creatorId: userId },
+      take: 100,
+      orderBy: [{ createdAt: "desc" }],
+    });
+
+    return meetings;
   }),
 });
