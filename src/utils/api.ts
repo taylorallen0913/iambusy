@@ -66,4 +66,4 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
-export type EventTypeOutput = RouterOutputs["event"]["getUserEvents"];
+export type EventTypeOutput = RouterOutputs["event"]["getById"];

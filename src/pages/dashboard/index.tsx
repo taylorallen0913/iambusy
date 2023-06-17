@@ -32,16 +32,18 @@ const DashboardPage: NextPage = () => {
 
   if (isEventsLoading) {
     return (
-      <div className="h-screen bg-gradient-radial from-slate-900 to-indigo-950 text-white" />
+      <div className="py-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">Loading...</div>
+      </div>
     );
   }
 
   if (!events) {
-    return (
-      <div className="h-screen bg-gradient-radial from-slate-900 to-indigo-950 text-white">
-        An error has occured.
+    <div className="py-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        Something went wrong...
       </div>
-    );
+    </div>;
   }
 
   return (
@@ -54,7 +56,7 @@ const DashboardPage: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="min-h-screen bg-gradient-radial from-slate-900 to-indigo-950">
+      <main className="">
         <div className="mx-auto max-w-6xl pt-20">
           <div>
             <Calendar
