@@ -3,6 +3,27 @@ import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
 export const meetingRouter = createTRPCRouter({
+  getById: privateProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
+
+      // Check if meeting with meetingId exists
+      const meeting = await ctx.prisma.meeting.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!meeting) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "The meeting id provided does not exist.",
+        });
+      }
+
+      return meeting;
+    }),
   create: privateProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ ctx, input }) => {
