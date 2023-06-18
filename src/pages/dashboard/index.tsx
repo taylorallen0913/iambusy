@@ -5,9 +5,12 @@ import { useRouter } from "next/router";
 import { type EventTypeOutput, api } from "~/utils/api";
 import { EventListItem } from "~/components/EventListItem";
 import { Calendar } from "~/components/Calendar";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const DashboardPage: NextPage = () => {
   const router = useRouter();
+  const ctx = api.useContext();
+  const [eventsRef] = useAutoAnimate();
 
   const { mutate: createEventMutation, isLoading: isCreatingEventLoading } =
     api.event.create.useMutation({
@@ -24,10 +27,29 @@ const DashboardPage: NextPage = () => {
       },
     });
 
+  const { mutate: deleteEventMutation } = api.event.delete.useMutation({
+    onSuccess: (event) => {
+      console.log(`Succesfully deleted event with id ${event.id}`);
+      void ctx.event.all.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        console.log(errorMessage[0]);
+      } else {
+        console.log("Failed to delete event! Please try again later.");
+      }
+    },
+  });
+
   const { data: events, isLoading: isEventsLoading } = api.event.all.useQuery();
 
   const createEvent = () => {
     createEventMutation({ name: "New Event" });
+  };
+
+  const deleteEvent = (id: string) => {
+    deleteEventMutation({ id });
   };
 
   if (isEventsLoading) {
@@ -58,7 +80,7 @@ const DashboardPage: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="">
+      <main>
         <div className="mx-auto max-w-6xl pt-20">
           <div>
             <div className="flex flex-row">
@@ -86,11 +108,17 @@ const DashboardPage: NextPage = () => {
               </div>
 
               {/* Events section */}
-              <ol className="mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8">
+              <ol
+                ref={eventsRef}
+                className="mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8"
+              >
                 {!!events &&
                   events.map((event: EventTypeOutput) => (
                     <li key={event.id}>
-                      <EventListItem event={event} />
+                      <EventListItem
+                        event={event}
+                        onDeleteEvent={deleteEvent}
+                      />
                     </li>
                   ))}
               </ol>

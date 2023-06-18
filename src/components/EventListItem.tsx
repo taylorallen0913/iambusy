@@ -9,6 +9,7 @@ import Image from "next/image";
 import { type EventTypeOutput } from "~/utils/api";
 import Link from "next/link";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 
 function classNames(...classes: unknown[]) {
   return classes.filter(Boolean).join(" ");
@@ -16,9 +17,14 @@ function classNames(...classes: unknown[]) {
 
 interface EventListItemProps {
   event: EventTypeOutput;
+  onDeleteEvent: (id: string) => void;
 }
 
-export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
+export const EventListItem: React.FC<EventListItemProps> = ({
+  event,
+  onDeleteEvent,
+}) => {
+  const router = useRouter();
   const formattedDate = () => {
     if (!event.date) {
       return null;
@@ -32,10 +38,7 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
   };
 
   return (
-    <Link
-      href={`/dashboard/event/${event.id}`}
-      className="relative flex space-x-6 py-6 xl:static"
-    >
+    <div className="relative flex space-x-6 py-6 xl:static">
       <Image
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         src={event.imageUrl!}
@@ -44,7 +47,10 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
         height={20}
         className="h-14 w-14 flex-none rounded-full"
       />
-      <div className="flex-auto">
+      <div
+        className="flex-auto"
+        onClick={() => void router.replace(`/dashboard/events/${event.id}`)}
+      >
         <h3 className="pr-10 font-semibold text-gray-900 xl:pr-0">
           {event.name}
         </h3>
@@ -77,7 +83,9 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
           </div>
         </dl>
       </div>
+
       <Menu
+        aria-disabled
         as="div"
         className="absolute right-0 top-6 xl:relative xl:right-auto xl:top-auto xl:self-center"
       >
@@ -102,7 +110,6 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    href="#"
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block px-4 py-2 text-sm"
@@ -115,13 +122,15 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    href="#"
+                    onClick={() => {
+                      onDeleteEvent(event.id);
+                    }}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block px-4 py-2 text-sm"
                     )}
                   >
-                    Cancel
+                    Delete
                   </a>
                 )}
               </Menu.Item>
@@ -129,6 +138,6 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
           </Menu.Items>
         </Transition>
       </Menu>
-    </Link>
+    </div>
   );
 };

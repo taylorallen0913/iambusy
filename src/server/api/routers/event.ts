@@ -47,6 +47,27 @@ export const eventRouter = createTRPCRouter({
       });
       return event;
     }),
+  delete: privateProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
+      // Check if event with eventId exists
+      const event = await ctx.prisma.event.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!event) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "The event id provided does not exist.",
+        });
+      }
+
+      // Delete event
+      return await ctx.prisma.event.delete({ where: { id } });
+    }),
   update: privateProcedure
     .input(
       z.object({
