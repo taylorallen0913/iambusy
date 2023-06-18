@@ -3,6 +3,17 @@ import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
+  all: privateProcedure.query(async ({ ctx }) => {
+    const { userId } = ctx;
+
+    const events = ctx.prisma.event.findMany({
+      where: { creatorId: userId },
+      take: 100,
+      orderBy: [{ createdAt: "desc" }],
+    });
+
+    return events;
+  }),
   getById: privateProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -74,60 +85,4 @@ export const eventRouter = createTRPCRouter({
 
       return updatedEvent;
     }),
-  modifyAvailability: privateProcedure
-    .input(
-      z.object({
-        eventId: z.string(),
-        utcStartTime: z.date(),
-        utcEndTime: z.date(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { eventId, utcStartTime, utcEndTime } = input;
-      const { userId } = ctx;
-
-      // Check if event with eventId exists
-      const eventExists = !!(await ctx.prisma.event.findFirst({
-        where: {
-          id: eventId,
-        },
-      }));
-
-      if (!eventExists) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "The event id provided does not exist.",
-        });
-      }
-
-      return await ctx.prisma.userAvailability.upsert({
-        where: {
-          userId_eventId: {
-            userId,
-            eventId,
-          },
-        },
-        update: {
-          utcStartTime,
-          utcEndTime,
-        },
-        create: {
-          utcStartTime,
-          utcEndTime,
-          eventId,
-          userId,
-        },
-      });
-    }),
-  getUserEvents: privateProcedure.query(async ({ ctx }) => {
-    const { userId } = ctx;
-
-    const events = ctx.prisma.event.findMany({
-      where: { creatorId: userId },
-      take: 100,
-      orderBy: [{ createdAt: "desc" }],
-    });
-
-    return events;
-  }),
 });

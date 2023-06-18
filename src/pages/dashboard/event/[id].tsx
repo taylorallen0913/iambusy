@@ -11,7 +11,6 @@ interface EventPageProps {
 
 const EventPage: NextPage<EventPageProps> = ({ id }) => {
   const router = useRouter();
-  const ctx = api.useContext();
 
   const {
     mutate: modifyAvailabilityMutation,
@@ -109,10 +108,7 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
             <DatePicker />
             <div className="pb-10">
               <button
-                onClick={() => {
-                  void ctx.event.getUserEvents.invalidate();
-                  void router.replace("/dashboard");
-                }}
+                onClick={() => void router.replace("/dashboard")}
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Go Back

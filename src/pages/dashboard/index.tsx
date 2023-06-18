@@ -24,8 +24,7 @@ const DashboardPage: NextPage = () => {
       },
     });
 
-  const { data: events, isLoading: isEventsLoading } =
-    api.event.getUserEvents.useQuery();
+  const { data: events, isLoading: isEventsLoading } = api.event.all.useQuery();
 
   const createEvent = () => {
     createEventMutation({ name: "New event" });
