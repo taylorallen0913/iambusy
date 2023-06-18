@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import Navbar from "~/components/Navbar";
 
 const HomePage: NextPage = () => {
   return (
@@ -13,9 +14,12 @@ const HomePage: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <nav>
+        <Navbar />
+      </nav>
       <main className="h-screen bg-gradient-radial from-slate-900 to-indigo-950">
         {/* Header text */}
-        <div className="flex flex-col items-center space-y-7 pt-32">
+        <div className="flex flex-col items-center space-y-7 pt-48">
           <h1 className="max-w-4xl text-center text-6xl font-bold text-white md:text-8xl">
             Simplify the way you{" "}
             <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">

@@ -46,3 +46,34 @@ export const FieldButton: React.FC<
     </button>
   );
 };
+
+interface ButtonProps {
+  href: string;
+  className?: string;
+  title: string;
+  variant?: "primary" | "secondary";
+}
+
+const Button: React.FC<ButtonProps> = ({
+  href,
+  title,
+  variant = "primary",
+  className = "",
+}) => {
+  return (
+    <div className="mt-10 flex items-center justify-center gap-x-6">
+      <a
+        href={href}
+        className={`${
+          variant === "primary"
+            ? "bg-primary-300 hover:bg-primary-400 focus-visible:outline-primary-700 text-slate-900"
+            : "bg-secondary-400 hover:bg-secondary-500 focus-visible:outline-secondary-600 text-white"
+        } rounded-md px-5 py-3.5 text-sm font-semibold  shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${className}`}
+      >
+        {title}
+      </a>
+    </div>
+  );
+};
+
+export default Button;
