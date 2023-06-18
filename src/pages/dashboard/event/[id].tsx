@@ -39,6 +39,7 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
 
   const { mutate: modifyEventMutation } = api.event.update.useMutation({
     onSuccess: () => {
+      void refetchEvent();
       console.log("Successfully updated event!");
     },
     onError: (e) => {
@@ -53,7 +54,11 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
     },
   });
 
-  const { data: event, isLoading } = api.event.getById.useQuery({ id });
+  const {
+    data: event,
+    isLoading,
+    refetch: refetchEvent,
+  } = api.event.getById.useQuery({ id });
 
   const handleDateChange = (newDate: string) => {
     modifyEventMutation({
@@ -81,11 +86,7 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
   }
 
   if (isLoading) {
-    return (
-      <div className="py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">Loading...</div>
-      </div>
-    );
+    return null;
   }
 
   if (!event) {
@@ -111,22 +112,7 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
       <div className="py-10">
         <header className="mx-auto flex max-w-7xl items-center border-b border-gray-200 px-4 pb-5 sm:px-6 lg:px-8">
           <div className="mr-10 w-full">
-            {isEditing ? (
-              <input
-                className="border-b border-gray-400 bg-transparent text-3xl font-semibold leading-tight text-gray-600 outline-none placeholder:text-gray-500"
-                placeholder="New Event"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    modifyEventMutation({
-                      eventId: id,
-                      name: e.currentTarget.value,
-                    });
-                  }
-                }}
-              />
-            ) : (
-              <h1 className="text-3xl font-bold">{event.name}</h1>
-            )}
+            <h1 className="text-3xl font-semibold">{event.name}</h1>
           </div>
 
           <DatePicker
