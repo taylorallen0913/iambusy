@@ -17,7 +17,7 @@ export const CalendarGrid: React.FC<{
       <thead {...headerProps} className="text-gray-600">
         <tr>
           {weekDays.map((day, index) => (
-            <th className="text-center" key={index}>
+            <th className="text-center font-normal" key={index}>
               {day}
             </th>
           ))}

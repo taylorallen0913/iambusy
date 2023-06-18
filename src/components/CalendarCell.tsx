@@ -70,7 +70,7 @@ export const CalendarCell: React.FC<CalendarCellProps> = ({ state, date }) => {
         } ${isDisabled ? "disabled" : ""}`}
       >
         <div
-          className={`flex h-full w-full items-center justify-center rounded-full ${
+          className={`flex h-full w-full items-center justify-center rounded-full font-light ${
             isDisabled && !isInvalid ? "text-gray-400" : ""
           } ${
             // Focus ring, visible while the cell has keyboard focus.

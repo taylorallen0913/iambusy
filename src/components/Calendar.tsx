@@ -30,12 +30,12 @@ export const Calendar: React.FC<AriaCalendarProps<DateValue>> = (props) => {
       className="inline-block text-gray-800"
     >
       <div className="flex items-center pb-4">
-        <h2 className="ml-2 flex-1 text-xl font-bold">{title}</h2>
+        <h2 className="ml-2 flex-1 text-lg font-medium">{title}</h2>
         <CalendarButton {...prevButtonProps}>
-          <ChevronLeftIcon className="h-6 w-6" />
+          <ChevronLeftIcon className="h-5 w-5" />
         </CalendarButton>
         <CalendarButton {...nextButtonProps}>
-          <ChevronRightIcon className="h-6 w-6" />
+          <ChevronRightIcon className="h-5 w-5" />
         </CalendarButton>
       </div>
       <CalendarGrid state={calendarState} />
