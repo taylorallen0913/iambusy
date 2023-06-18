@@ -1,4 +1,37 @@
+import { useState, type FormEvent } from "react";
+import { toast } from "react-hot-toast";
+import { api } from "~/utils/api";
+
 export const Newsletter = () => {
+  const [email, setEmail] = useState("");
+
+  const {
+    mutate: subscribeToNewsletter,
+    isLoading: isSubscribingToNewsletter,
+  } = api.newsletter.subscribe.useMutation({
+    onSuccess: () => {
+      toast.success("Thank you for signing up for the newsletter!");
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(
+          "Failed to subscribe to newsletter! Please try again later."
+        );
+        console.log(errorMessage[0]);
+      } else {
+        toast.error(
+          "Failed to subscribe to newsletter! Please try again later."
+        );
+      }
+    },
+  });
+
+  const onSubscribeToNewsletter = (e: FormEvent) => {
+    e.preventDefault();
+    subscribeToNewsletter({ email });
+  };
+
   return (
     <div className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -8,13 +41,16 @@ export const Newsletter = () => {
             <span className="bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">
               notified
             </span>{" "}
-            when we’re launching.
+            when we&apos;re launching.
           </h2>
           <p className="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-300">
             Be the first to experience a scheduling revolution. Sign up for
             early access perks and features.
           </p>
-          <form className="mx-auto mt-10 flex max-w-md gap-x-4">
+          <form
+            onSubmit={(e) => onSubscribeToNewsletter(e)}
+            className="mx-auto mt-10 flex max-w-md gap-x-4"
+          >
             <label htmlFor="email-address" className="sr-only">
               Email address
             </label>
@@ -26,8 +62,11 @@ export const Newsletter = () => {
               required
               className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <button
+              disabled={isSubscribingToNewsletter}
               type="submit"
               className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >

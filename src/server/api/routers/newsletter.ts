@@ -13,7 +13,7 @@ export const newsletterRouter = createTRPCRouter({
       const { email } = input;
 
       // Check if newsletter entry with email exists
-      const newsletterExists = !!(await ctx.prisma.newsletter.findFirst({
+      const newsletterExists = !!(await ctx.prisma.newsletter.findUnique({
         where: {
           email,
         },
