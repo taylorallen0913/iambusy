@@ -3,8 +3,8 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { type EventTypeOutput, api } from "~/utils/api";
-import EventListItem from "~/components/EventListItem";
-import Calendar from "~/components/Calendar";
+import { EventListItem } from "~/components/EventListItem";
+import { Calendar } from "~/components/Calendar";
 
 const DashboardPage: NextPage = () => {
   const router = useRouter();

@@ -2,6 +2,7 @@
 import { type GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { DatePicker } from "~/components/DatePicker";
 import { api } from "~/utils/api";
 
 interface EventPageProps {
@@ -105,6 +106,7 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
         </header>
         <main>
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <DatePicker />
             <div className="pb-10">
               <button
                 onClick={() => {

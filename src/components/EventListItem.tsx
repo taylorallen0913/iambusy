@@ -17,7 +17,7 @@ interface EventListItemProps {
   event: EventTypeOutput;
 }
 
-const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
+export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
   return (
     <Link
       href={`/dashboard/event/${event.id}`}
@@ -120,5 +120,3 @@ const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
     </Link>
   );
 };
-
-export default EventListItem;
