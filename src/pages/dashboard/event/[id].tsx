@@ -6,6 +6,7 @@ import { parseDate } from "@internationalized/date";
 import { DatePicker } from "~/components/DatePicker";
 import { api } from "~/utils/api";
 import dayjs from "dayjs";
+import { useState } from "react";
 
 interface EventPageProps {
   id: string;
@@ -13,6 +14,9 @@ interface EventPageProps {
 
 const EventPage: NextPage<EventPageProps> = ({ id }) => {
   const router = useRouter();
+  const ctx = api.useContext();
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const {
     mutate: modifyAvailabilityMutation,
@@ -56,6 +60,7 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
       eventId: id,
       date: dayjs(newDate, "YYYY-MM-DD").toDate(),
     });
+    void ctx.event.getById.invalidate();
   };
 
   // Modifies event availability. If a user has not already set a event availibility, this will set it for them.
@@ -104,46 +109,72 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="py-10">
-        <header>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <input
-              className="bg-transparent text-3xl font-semibold leading-tight text-gray-900 outline-none placeholder:text-gray-500"
-              placeholder="New Event"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  modifyEventMutation({
-                    eventId: id,
-                    name: e.currentTarget.value,
-                  });
-                }
-              }}
-            />
+        <header className="mx-auto flex max-w-7xl items-center border-b border-gray-200 px-4 pb-5 sm:px-6 lg:px-8">
+          <div className="mr-10 w-full">
+            {isEditing ? (
+              <input
+                className="border-b border-gray-400 bg-transparent text-3xl font-semibold leading-tight text-gray-600 outline-none placeholder:text-gray-500"
+                placeholder="New Event"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    modifyEventMutation({
+                      eventId: id,
+                      name: e.currentTarget.value,
+                    });
+                  }
+                }}
+              />
+            ) : (
+              <h1 className="text-3xl font-bold">{event.name}</h1>
+            )}
           </div>
-        </header>
-        <main>
-          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <DatePicker
-              onDateChange={handleDateChange}
-              defaultValue={parseDate(formatDate(event.date))}
-            />
-            <div className="pb-10">
-              <button
-                onClick={() => void router.replace("/dashboard")}
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Go Back
-              </button>
-            </div>
 
-            {!isModifyingAvailabilityLoading && (
+          <DatePicker
+            onDateChange={handleDateChange}
+            defaultValue={parseDate(formatDate(event.date))}
+          />
+
+          <div className="ml-10">
+            {isEditing ? (
               <button
-                onClick={modifyAvailability}
+                onClick={() => {
+                  setIsEditing(false);
+                }}
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Modify Event Availability
+                Save
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Edit
               </button>
             )}
           </div>
+        </header>
+        <main className="mx-auto h-full max-w-7xl sm:px-6 lg:px-8">
+          <div className="my-5" />
+          <div className="pb-10">
+            <button
+              onClick={() => void router.replace("/dashboard")}
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Go Back
+            </button>
+          </div>
+
+          {!isModifyingAvailabilityLoading && (
+            <button
+              onClick={modifyAvailability}
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Modify Event Availability
+            </button>
+          )}
         </main>
       </div>
     </>
