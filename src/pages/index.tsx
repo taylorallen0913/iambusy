@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { Features } from "~/components/Features";
 import Navbar from "~/components/Navbar";
 
 const HomePage: NextPage = () => {
@@ -17,7 +18,7 @@ const HomePage: NextPage = () => {
       <nav>
         <Navbar />
       </nav>
-      <main className="h-screen bg-gradient-radial from-slate-900 to-indigo-950">
+      <main className="bg-gradient-radial from-slate-900 to-indigo-950">
         {/* Header text */}
         <div className="flex flex-col items-center space-y-7 pt-48">
           <h1 className="max-w-4xl text-center text-6xl font-bold text-white md:text-8xl">
@@ -41,6 +42,8 @@ const HomePage: NextPage = () => {
             Get Started
           </Link>
         </div>
+
+        <Features />
       </main>
     </>
   );

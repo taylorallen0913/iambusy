@@ -19,7 +19,7 @@ model Event {
 
     name               String?            @default("New Event") @db.VarChar(100)
     date               DateTime           @default(now())
-    imageUrl           String?            @default("https://www.nbmchealth.com/wp-content/uploads/2018/04/default-placeholder.png")
+    imageUrl           String?            @default("https://www.vhv.rs/dpng/d/58-583825_team-icon-png-round-transparent-png.png")
     location           String?            @default("Google Meet")
     creatorId          String
     userAvailabilities UserAvailability[]
