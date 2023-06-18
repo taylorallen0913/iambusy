@@ -7,6 +7,8 @@ import { Stats } from "~/components/Stats";
 import { Hero } from "~/components/Hero";
 // import { FeatureSection1 } from "~/components/FeatureSection1";
 import { Newsletter } from "~/components/Newsletter";
+import { FAQ } from "~/components/FAQ";
+import { Integrations } from "~/components/Integrations";
 
 const LandingPage: NextPage = () => {
   return (
@@ -28,6 +30,8 @@ const LandingPage: NextPage = () => {
         <Stats />
         {/* <FeatureSection1 /> */}
         <Newsletter />
+        <Integrations />
+        <FAQ />
       </main>
       <Footer />
     </div>

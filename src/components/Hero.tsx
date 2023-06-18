@@ -29,6 +29,7 @@ export const Hero: React.FC = () => {
         </motion.h1>
       </div>
       <motion.div
+        transition={{ duration: 1.7 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="flex justify-center pt-10"
