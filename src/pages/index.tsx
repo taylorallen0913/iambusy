@@ -5,7 +5,7 @@ import { Footer } from "~/components/Footer";
 import Navbar from "~/components/Navbar";
 import { Stats } from "~/components/Stats";
 import { Hero } from "~/components/Hero";
-import { FeatureSection1 } from "~/components/FeatureSection1";
+// import { FeatureSection1 } from "~/components/FeatureSection1";
 import { Newsletter } from "~/components/Newsletter";
 
 const LandingPage: NextPage = () => {
