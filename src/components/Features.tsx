@@ -47,7 +47,7 @@ const features = [
   },
 ];
 
-export const Features = () => {
+export const Features: React.FC = () => {
   return (
     <div className="py-6 sm:py-8">
       <div className="relative overflow-hidden pt-16">

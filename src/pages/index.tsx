@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { Features } from "~/components/Features";
+import { Footer } from "~/components/Footer";
 import Navbar from "~/components/Navbar";
 
 const HomePage: NextPage = () => {
@@ -44,6 +45,8 @@ const HomePage: NextPage = () => {
         </div>
 
         <Features />
+
+        <Footer />
       </main>
     </>
   );
