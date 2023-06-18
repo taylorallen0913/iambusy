@@ -7,7 +7,6 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { type EventTypeOutput } from "~/utils/api";
-import Link from "next/link";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 
