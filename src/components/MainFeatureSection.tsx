@@ -1,7 +1,7 @@
 import {
   ShareIcon,
   EyeIcon,
-  CalendarDaysIcon,
+  CalendarIcon,
   BellAlertIcon,
   ClockIcon,
   ComputerDesktopIcon,
@@ -13,7 +13,7 @@ const features = [
     name: "Effortless Event Creation",
     description:
       "Create events in seconds with our intuitive user interface. Just name your event, select the date range, and you're all set!",
-    icon: CalendarDaysIcon,
+    icon: CalendarIcon,
   },
   {
     name: "Share with Ease",
@@ -47,7 +47,7 @@ const features = [
   },
 ];
 
-export const Features: React.FC = () => {
+export const MainFeatureSection: React.FC = () => {
   return (
     <div className="py-6 sm:py-8">
       <div className="relative overflow-hidden pt-16">

@@ -13,8 +13,11 @@ export const Stats: React.FC = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Trusted by teams worldwide
+            <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Trusted by{" "}
+              <span className="bg-gradient-to-r from-blue-400 to-sky-500 bg-clip-text text-transparent">
+                teams worldwide.
+              </span>
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-300">
               The prime choice for teams to effortlessly coordinate events and
@@ -24,37 +27,37 @@ export const Stats: React.FC = () => {
 
           <div className="mx-auto mt-16 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
             <Image
-              className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/transistor-logo-white.svg"
-              alt="Transistor"
+              className="col-span-2 max-h-12 w-full fill-white object-contain lg:col-span-1"
+              src="https://companieslogo.com/img/orig/META_BIG.D-db66a9c7.png?t=1654568366"
+              alt="Meta"
               width={158}
               height={48}
             />
             <Image
               className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/reform-logo-white.svg"
-              alt="Reform"
+              src="https://companieslogo.com/img/orig/DASH_BIG.D-7adcd866.png?t=1648911998"
+              alt="DoorDash"
               width={158}
               height={48}
             />
             <Image
               className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/tuple-logo-white.svg"
-              alt="Tuple"
+              src="https://companieslogo.com/img/orig/IBM.D-343f6e3f.png?t=1669436923"
+              alt="IBM"
               width={158}
               height={48}
             />
             <Image
               className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/savvycal-logo-white.svg"
-              alt="SavvyCal"
+              src="https://companieslogo.com/img/orig/AAPL.D-149adf35.png?t=1632720960"
+              alt="Apple"
               width={158}
               height={48}
             />
             <Image
               className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
-              src="https://tailwindui.com/img/logos/158x48/statamic-logo-white.svg"
-              alt="Statamic"
+              src="https://companieslogo.com/img/orig/TEAM_BIG.D-e226f95c.png?t=1683437134"
+              alt="Atlassian"
               width={158}
               height={48}
             />

@@ -1,14 +1,16 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { Features } from "~/components/Features";
+import { MainFeatureSection } from "~/components/MainFeatureSection";
 import { Footer } from "~/components/Footer";
 import Navbar from "~/components/Navbar";
 import { Stats } from "~/components/Stats";
 import { Hero } from "~/components/Hero";
+import { FeatureSection1 } from "~/components/FeatureSection1";
+import { Newsletter } from "~/components/Newsletter";
 
 const LandingPage: NextPage = () => {
   return (
-    <>
+    <div className="bg-gradient-radial from-slate-900 to-indigo-950">
       <Head>
         <title>iambusy</title>
         <meta
@@ -20,13 +22,15 @@ const LandingPage: NextPage = () => {
       <nav>
         <Navbar />
       </nav>
-      <main className="bg-gradient-radial from-slate-900 to-indigo-950">
+      <main>
         <Hero />
-        <Features />
+        <MainFeatureSection />
         <Stats />
-        <Footer />
+        {/* <FeatureSection1 /> */}
+        <Newsletter />
       </main>
-    </>
+      <Footer />
+    </div>
   );
 };
 
