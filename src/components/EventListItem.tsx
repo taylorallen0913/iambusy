@@ -48,7 +48,7 @@ export const EventListItem: React.FC<EventListItemProps> = ({
       />
       <div
         className="flex-auto"
-        onClick={() => void router.replace(`/dashboard/event/${event.id}`)}
+        onClick={() => void router.push(`/dashboard/event/${event.id}`)}
       >
         <h3 className="pr-10 font-semibold text-gray-900 xl:pr-0">
           {event.name}
