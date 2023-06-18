@@ -27,7 +27,7 @@ const DashboardPage: NextPage = () => {
   const { data: events, isLoading: isEventsLoading } = api.event.all.useQuery();
 
   const createEvent = () => {
-    createEventMutation({ name: "New event" });
+    createEventMutation({ name: "New Event" });
   };
 
   if (isEventsLoading) {
@@ -75,7 +75,7 @@ const DashboardPage: NextPage = () => {
               <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
                 <Calendar />
                 {/* Add event button */}
-                {isCreatingEventLoading && (
+                {!isCreatingEventLoading && (
                   <button
                     onClick={createEvent}
                     className="mt-10 bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

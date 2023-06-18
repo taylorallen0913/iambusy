@@ -2,8 +2,10 @@
 import { type GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { parseDate } from "@internationalized/date";
 import { DatePicker } from "~/components/DatePicker";
 import { api } from "~/utils/api";
+import dayjs from "dayjs";
 
 interface EventPageProps {
   id: string;
@@ -15,7 +17,7 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
   const {
     mutate: modifyAvailabilityMutation,
     isLoading: isModifyingAvailabilityLoading,
-  } = api.event.modifyAvailability.useMutation({
+  } = api.availability.update.useMutation({
     onSuccess: () => {
       console.log("Successfully updated event availability!");
     },
@@ -49,6 +51,13 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
 
   const { data: event, isLoading } = api.event.getById.useQuery({ id });
 
+  const handleDateChange = (newDate: string) => {
+    modifyEventMutation({
+      eventId: id,
+      date: dayjs(newDate, "YYYY-MM-DD").toDate(),
+    });
+  };
+
   // Modifies event availability. If a user has not already set a event availibility, this will set it for them.
   const modifyAvailability = () => {
     modifyAvailabilityMutation({
@@ -57,6 +66,14 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
       utcEndTime: new Date(),
     });
   };
+
+  function formatDate(date: Date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
 
   if (isLoading) {
     return (
@@ -105,7 +122,10 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
         </header>
         <main>
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <DatePicker />
+            <DatePicker
+              onDateChange={handleDateChange}
+              defaultValue={parseDate(formatDate(event.date))}
+            />
             <div className="pb-10">
               <button
                 onClick={() => void router.replace("/dashboard")}

@@ -8,6 +8,7 @@ import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { type EventTypeOutput } from "~/utils/api";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 function classNames(...classes: unknown[]) {
   return classes.filter(Boolean).join(" ");
@@ -18,6 +19,18 @@ interface EventListItemProps {
 }
 
 export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
+  const formattedDate = () => {
+    if (!event.date) {
+      return null;
+    }
+
+    const dayjsDate = dayjs(event.date);
+    return {
+      formattedDate: dayjsDate.format("MMMM D, YYYY [at] h:mm A"),
+      isoDate: dayjsDate.toISOString(),
+    };
+  };
+
   return (
     <Link
       href={`/dashboard/event/${event.id}`}
@@ -45,12 +58,11 @@ export const EventListItem: React.FC<EventListItemProps> = ({ event }) => {
               />
             </dt>
             <dd>
-              <time dateTime="2022-01-10T17:00">
-                January 10th, 2022 at 5:00 PM
-              </time>
-              {/* <time dateTime={event.datetime}>
-              {event.date} at {event.time}
-            </time> */}
+              {formattedDate() && (
+                <time dateTime={formattedDate()?.isoDate}>
+                  {formattedDate()?.formattedDate}
+                </time>
+              )}
             </dd>
           </div>
           <div className="mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">

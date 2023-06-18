@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDatePickerState } from "react-stately";
 import {
   type AriaDatePickerProps,
@@ -13,7 +13,11 @@ import { Popover } from "./Popover";
 import { Dialog } from "./Dialog";
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
 
-export const DatePicker: React.FC<AriaDatePickerProps<DateValue>> = (props) => {
+type DatePickerProps = AriaDatePickerProps<DateValue> & {
+  onDateChange: (newDate: string) => void;
+};
+
+export const DatePicker: React.FC<DatePickerProps> = (props) => {
   const state = useDatePickerState(props);
   const ref = useRef<HTMLDivElement>(null);
   const {
@@ -24,6 +28,13 @@ export const DatePicker: React.FC<AriaDatePickerProps<DateValue>> = (props) => {
     dialogProps,
     calendarProps,
   } = useDatePicker(props, state, ref);
+
+  useEffect(() => {
+    if (state.dateValue) {
+      props.onDateChange(state.dateValue.toString());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.dateValue]);
 
   return (
     <div className="relative inline-flex flex-col text-left">

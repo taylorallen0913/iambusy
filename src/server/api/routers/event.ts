@@ -54,10 +54,11 @@ export const eventRouter = createTRPCRouter({
         name: z.string().optional(),
         imageUrl: z.string().optional(),
         location: z.string().optional(),
+        date: z.date().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { eventId, name, imageUrl, location } = input;
+      const { eventId, name, imageUrl, location, date } = input;
 
       // Check if event with eventId exists
       const event = await ctx.prisma.event.findUnique({
@@ -80,6 +81,7 @@ export const eventRouter = createTRPCRouter({
           name,
           imageUrl,
           location,
+          date,
         },
       });
 
