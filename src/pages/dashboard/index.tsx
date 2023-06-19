@@ -6,6 +6,7 @@ import { type EventTypeOutput, api } from "~/utils/api";
 import { EventListItem } from "~/components/EventListItem";
 import { Calendar } from "~/components/Calendar";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { PlusIcon, CalendarIcon } from "@heroicons/react/20/solid";
 
 const DashboardPage: NextPage = () => {
   const router = useRouter();
@@ -15,7 +16,9 @@ const DashboardPage: NextPage = () => {
   const { mutate: createEventMutation, isLoading: isCreatingEventLoading } =
     api.event.create.useMutation({
       onSuccess: async (event) => {
+        console.log("here");
         await router.push(`/dashboard/event/${event.id}`);
+        await refetch();
       },
       onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors.content;
@@ -29,7 +32,7 @@ const DashboardPage: NextPage = () => {
 
   const { mutate: deleteEventMutation } = api.event.delete.useMutation({
     onSuccess: (event) => {
-      console.log(`Succesfully deleted event with id ${event.id}`);
+      console.log(`Successfully deleted event with id ${event.id}`);
       void ctx.event.all.invalidate();
     },
     onError: (e) => {
@@ -42,7 +45,11 @@ const DashboardPage: NextPage = () => {
     },
   });
 
-  const { data: events, isLoading: isEventsLoading } = api.event.all.useQuery();
+  const {
+    data: events,
+    isLoading: isEventsLoading,
+    refetch,
+  } = api.event.all.useQuery();
 
   const createEvent = () => {
     createEventMutation({ name: "New Event" });
@@ -61,6 +68,34 @@ const DashboardPage: NextPage = () => {
       <div className="py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           Something went wrong...
+        </div>
+      </div>
+    );
+  }
+
+  if (events.length === 0) {
+    return (
+      <div className="flex min-h-screen items-center justify-center pb-40">
+        <div className="text-center">
+          <CalendarIcon className="mx-auto h-12 w-12 text-gray-400" />
+
+          <h3 className="mt-2 text-sm font-semibold text-gray-900">
+            No events
+          </h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Get started by creating a new event.
+          </p>
+          <div className="mt-6">
+            <button
+              disabled={isCreatingEventLoading}
+              onClick={createEvent}
+              type="button"
+              className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+              New Event
+            </button>
+          </div>
         </div>
       </div>
     );
