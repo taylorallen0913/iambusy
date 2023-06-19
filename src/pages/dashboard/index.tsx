@@ -52,7 +52,10 @@ const DashboardPage: NextPage = () => {
   } = api.event.all.useQuery();
 
   const createEvent = () => {
-    createEventMutation({ name: "New Event" });
+    createEventMutation({
+      name: "New Event",
+      description: "Event description",
+    });
   };
 
   const deleteEvent = (id: string) => {

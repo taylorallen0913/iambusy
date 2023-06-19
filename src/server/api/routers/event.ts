@@ -36,12 +36,13 @@ export const eventRouter = createTRPCRouter({
       return event;
     }),
   create: privateProcedure
-    .input(z.object({ name: z.string() }))
+    .input(z.object({ name: z.string(), description: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const { name } = input;
+      const { name, description } = input;
       const event = await ctx.prisma.event.create({
         data: {
           name,
+          description,
           creatorId: ctx.userId,
         },
       });

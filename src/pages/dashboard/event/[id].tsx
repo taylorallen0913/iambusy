@@ -110,36 +110,41 @@ const EventPage: NextPage<EventPageProps> = ({ id }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="py-10">
-        <header className="mx-auto flex max-w-7xl items-center border-b border-gray-200 px-4 pb-5 sm:px-6 lg:px-8">
-          <div className="mr-10 w-full">
-            <h1 className="text-3xl font-semibold">{event.name}</h1>
-          </div>
+        <header className="mx-auto flex w-full max-w-7xl border-b border-gray-200 px-4 pb-5 sm:px-6 lg:px-8">
+          <div className="flex flex-grow items-center">
+            <div className="mr-10 w-full space-y-2">
+              <h1 className="text-2xl font-medium">{event.name}</h1>
+              <h1 className="text-sm text-gray-700">{event.description}</h1>
+            </div>
 
-          <DatePicker
-            onDateChange={handleDateChange}
-            defaultValue={parseDate(formatDate(event.date))}
-          />
+            <div className="mx-auto flex flex-row items-center">
+              <DatePicker
+                onDateChange={handleDateChange}
+                defaultValue={parseDate(formatDate(event.date))}
+              />
 
-          <div className="ml-10">
-            {isEditing ? (
-              <button
-                onClick={() => {
-                  setIsEditing(false);
-                }}
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Save
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  setIsEditing(true);
-                }}
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Edit
-              </button>
-            )}
+              <div className="ml-10">
+                {isEditing ? (
+                  <button
+                    onClick={() => {
+                      setIsEditing(false);
+                    }}
+                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsEditing(true);
+                    }}
+                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Edit
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </header>
         <main className="mx-auto h-full max-w-7xl sm:px-6 lg:px-8">

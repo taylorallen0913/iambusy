@@ -25,7 +25,8 @@ model Event {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name               String?            @default("New Event") @db.VarChar(100)
+    name               String             @default("New Event") @db.VarChar(100)
+    description        String             @default("Event description") @db.VarChar(500)
     date               DateTime           @default(now())
     imageUrl           String?            @default("https://www.vhv.rs/dpng/d/58-583825_team-icon-png-round-transparent-png.png")
     location           String?            @default("Google Meet")
