@@ -1,17 +1,26 @@
 import { useRef } from "react";
 import { useLocale } from "@react-aria/i18n";
-import { useTimeFieldState } from "@react-stately/datepicker";
-import { useTimeField } from "@react-aria/datepicker";
+import {
+  type TimeFieldStateOptions,
+  useTimeFieldState,
+} from "@react-stately/datepicker";
+import {
+  type AriaTimeFieldProps,
+  type TimeValue,
+  useTimeField,
+} from "@react-aria/datepicker";
 import { DateSegment } from "./DateSegment";
 
-export const TimeField = (props) => {
+export const TimeField = (
+  props: TimeFieldStateOptions<TimeValue> | AriaTimeFieldProps<TimeValue>
+) => {
   const { locale } = useLocale();
   const state = useTimeFieldState({
     ...props,
     locale,
   });
 
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
   const { labelProps, fieldProps } = useTimeField(props, state, ref);
 
   return (
