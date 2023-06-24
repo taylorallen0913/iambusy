@@ -1,94 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useEffect, useRef, useState } from "react";
 
-import {
-  type Box,
-  boxesIntersect,
-  useSelectionContainer,
-} from "@air/react-drag-to-select";
+interface AvailabilityType {
+  utcStartTime: Date;
+  utcEndTime: Date;
+}
+interface AvailabilityProps {
+  availabilities: AvailabilityType[];
+}
 
-const AvaiabilitySelector: React.FC = () => {
-  const [selectionBox, setSelectionBox] = useState<Box>();
-  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
-  const selectableItems = useRef<Box[]>([]);
-  const elementsContainerRef = useRef<HTMLDivElement | null>(null);
-
-  const { DragSelection } = useSelectionContainer({
-    eventsElement: document.getElementById("root"),
-    onSelectionChange: (box) => {
-      //   if (selectedIndexes) {
-      //     setSelectedIndexes([]);
-      //   }
-      /**
-       * Here we make sure to adjust the box's left and top with the scroll position of the window
-       * @see https://github.com/AirLabsTeam/react-drag-to-select/#scrolling
-       */
-      const scrollAwareBox = {
-        ...box,
-        top: box.top + window.scrollY,
-        left: box.left + window.scrollX,
-      };
-
-      setSelectionBox(scrollAwareBox);
-      const indexesToSelect: number[] = [];
-      selectableItems.current.forEach((item, index) => {
-        if (boxesIntersect(scrollAwareBox, item)) {
-          indexesToSelect.push(index);
-        }
-      });
-
-      console.log(selectedIndexes);
-
-      setSelectedIndexes(indexesToSelect);
-    },
-    onSelectionStart: () => {
-      return;
-    },
-    onSelectionEnd: () => {
-      return;
-    },
-    selectionProps: {
-      style: {
-        border: "2px dashed purple",
-        borderRadius: 4,
-        backgroundColor: "brown",
-        opacity: 0.5,
-      },
-    },
-    shouldStartSelecting: (target) => {
-      // do something with target to determine if the user should start selecting
-
-      return true;
-    },
-  });
-
-  useEffect(() => {
-    if (elementsContainerRef.current) {
-      Array.from(elementsContainerRef.current.children).forEach((item) => {
-        const { left, top, width, height } = item.getBoundingClientRect();
-        selectableItems.current.push({
-          left,
-          top,
-          width,
-          height,
-        });
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    console.log(selectedIndexes);
-    // console.log(
-    //   `${selectedIndexes[0]!} / span ${Math.min(
-    //     0,
-    //     selectedIndexes[selectedIndexes.length - 1]!
-    //   )}`
-    // );
-  }, [selectedIndexes]);
-
+const Availability: React.FC<AvailabilityProps> = ({ availabilities }) => {
   return (
     <div className="flex h-full w-32 flex-col">
-      <DragSelection />
       <div className="isolate flex flex-auto overflow-hidden bg-white">
         <div className="flex flex-auto flex-col overflow-auto">
           <div className="flex w-full flex-auto">
@@ -97,7 +19,7 @@ const AvaiabilitySelector: React.FC = () => {
               {/* Horizontal lines */}
               <div
                 className="col-start-1 col-end-2 row-start-1 grid divide-y divide-gray-100"
-                style={{ gridTemplateRows: "repeat(48, minmax(1rem, 1fr))" }}
+                style={{ gridTemplateRows: "repeat(48, minmax(0.7rem, 1fr))" }}
               >
                 <div className="row-end-1 h-7"></div>
                 <div>
@@ -249,41 +171,19 @@ const AvaiabilitySelector: React.FC = () => {
               <div
                 className="col-start-1 col-end-2 row-start-1 grid"
                 style={{ gridTemplateRows: "repeat(24, minmax(1rem, 1fr))" }}
-                ref={elementsContainerRef}
               >
-                {Array(24)
+                {/* {Array(
+                  (availabilities[0]!.utcStartTime.getHours() -
+                    availabilities[0]!.utcEndTime.getHours()) *
+                    12
+                )
                   .fill(null)
                   .map((_, i) => (
                     <div key={i}></div>
-                  ))}
+                  ))} */}
               </div>
 
               {/* First user availability */}
-              {selectedIndexes && selectedIndexes.length > 1 && (
-                <ol
-                  className="col-start-1 col-end-2 row-start-1 grid grid-cols-1"
-                  style={{
-                    gridTemplateRows:
-                      "1.75rem repeat(288, minmax(0, 1fr)) auto",
-                  }}
-                >
-                  <li
-                    className="relative mt-px flex"
-                    style={{
-                      gridRow: `${selectedIndexes[0]! * 2} / span ${
-                        Math.abs(
-                          selectedIndexes[selectedIndexes.length - 1]! -
-                            selectedIndexes[0]!
-                        ) * 2
-                      }`,
-                    }}
-                  >
-                    <a className="absolute inset-1 flex flex-col rounded-md bg-blue-200"></a>
-                  </li>
-                </ol>
-              )}
-
-              {/* Second user availability */}
               <ol
                 className="col-start-1 col-end-2 row-start-1 grid grid-cols-1"
                 style={{
@@ -292,10 +192,25 @@ const AvaiabilitySelector: React.FC = () => {
               >
                 <li
                   className="relative mt-px flex"
+                  style={{ gridRow: `4 / span 4` }}
+                >
+                  <a className="absolute inset-1 flex flex-col rounded-md bg-blue-200"></a>
+                </li>
+              </ol>
+
+              {/* Second user availability */}
+              <ol
+                className="col-start-1 col-end-2 row-start-1 grid grid-cols-1"
+                style={{
+                  gridTemplateRows: "1.75rem repeat(288, minmax(0, 1fr)) auto",
+                }}
+              >
+                {/* <li
+                  className="relative mt-px flex"
                   style={{ gridRow: `24 / span 12` }}
                 >
                   <a className="absolute inset-1 flex flex-col rounded-md bg-red-200"></a>
-                </li>
+                </li> */}
               </ol>
             </div>
           </div>
@@ -305,4 +220,4 @@ const AvaiabilitySelector: React.FC = () => {
   );
 };
 
-export default AvaiabilitySelector;
+export default Availability;

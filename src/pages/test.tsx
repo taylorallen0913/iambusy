@@ -1,9 +1,8 @@
 import dynamic from "next/dynamic";
 
-const AvaiabilitySelector = dynamic(
-  () => import("~/components/AvailabilitySelector"),
-  { ssr: false }
-);
+const AvaiabilitySelector = dynamic(() => import("~/components/Availability"), {
+  ssr: false,
+});
 
 const TestScreen = () => {
   return (
